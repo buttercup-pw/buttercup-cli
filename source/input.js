@@ -1,4 +1,3 @@
-// const readline = require("readline");
 const read = require("read");
 const pify = require("pify");
 const { parseCommandString } = require("./parsing.js");
@@ -25,16 +24,6 @@ function getUserInput() {
         prompt: "Prompt> ", // todo
         terminal: true
     });
-    // const rl = readline.createInterface({
-    //     input: process.stdin,
-    //     output: process.stdout
-    // });
-    // return new Promise(function(resolve) {
-    //     rl.question("Prompt> ", function(commandText) {
-    //         rl.close();
-    //         resolve(commandText);
-    //     });
-    // });
 }
 
 module.exports = {

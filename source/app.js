@@ -9,7 +9,7 @@ function getAppContext() {
 
 function getNewContext() {
     return {
-        context: "archive",
+        section: "archive",
         currentGroupID: null,
         currentEntryID: null
     };
