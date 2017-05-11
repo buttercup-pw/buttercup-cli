@@ -1,8 +1,13 @@
-const { listGroups, selectGroupByIndex } = require("./buttercup.js");
+const { listGroups, selectGroupByIndex, selectPreviousGroup } = require("./buttercup.js");
 
 function handleGroupsCommand(commandParts) {
     const primary = commandParts.shift();
     switch (primary) {
+        case "back":
+            /* falls-through */
+        case "parent":
+            selectPreviousGroup();
+            break;
         case "list":
             listGroups();
             break;

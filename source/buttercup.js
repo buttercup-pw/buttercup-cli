@@ -46,6 +46,18 @@ function loadArchiveFromFile(filename) {
         });
 }
 
+function logCurrentGroup() {
+    const context = getAppContext();
+    if (context.currentGroupID && context.section === "group") {
+        const workspace = getSharedWorkspace();
+        const archive = workspace.primary.archive;
+        const group = archive.findGroupByID(context.currentGroupID);
+        const groupName = colourItemTitle(group.getTitle());
+        const groupID = dimColour(`(${group.getID()})`);
+        console.log(`Current group: ${groupName} ${groupID}`);
+    }
+}
+
 function selectGroupByIndex(index) {
     const context = getAppContext();
     const groups = getCurrentGroupsArray();
@@ -57,7 +69,29 @@ function selectGroupByIndex(index) {
     context.section = "group";
     context.currentGroupID = group.getID();
     context.currentEntryID = null;
-    console.log(`Selected group ${context.currentGroupID}`);
+    logCurrentGroup();
+}
+
+function selectPreviousGroup() {
+    const context = getAppContext();
+    if (context.currentGroupID === null || context.section === "archive") {
+        console.error("No parent from current location");
+        return;
+    }
+    const workspace = getSharedWorkspace();
+    const archive = workspace.primary.archive;
+    const group = archive.findGroupByID(context.currentGroupID);
+    const parent = group.getGroup();
+    if (parent) {
+        context.currentGroupID = parent.getID();
+        context.section = "group";
+        logCurrentGroup();
+    } else {
+        // no parent, use archive
+        context.currentGroupID = null;
+        context.section = "archive";
+        console.log("At archive level");
+    }
 }
 
 function setSharedWorkspace(ws) {
@@ -69,5 +103,6 @@ module.exports = {
     listGroups,
     loadArchiveFromFile,
     selectGroupByIndex,
+    selectPreviousGroup,
     setSharedWorkspace
 };
