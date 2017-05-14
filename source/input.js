@@ -1,17 +1,10 @@
-const read = require("read");
-const pify = require("pify");
+const input = require("input");
 const { parseCommandString } = require("./parsing.js");
 const { getAppContext } = require("./app.js");
 const { colourPath, colourSeparator, getSeparator } = require("./terminal.js");
 
-const readPrompt = pify(read);
-
 function getLoginPassword() {
-    return readPrompt({
-        prompt: "Password: ",
-        terminal: true,
-        silent: true
-    });
+    return input.password("Password: ");
 }
 
 function getPrompt() {
@@ -36,10 +29,7 @@ function getUserCommand() {
 }
 
 function getUserInput() {
-    return readPrompt({
-        prompt: getPrompt(),
-        terminal: true
-    });
+    return input.text(getPrompt());
 }
 
 module.exports = {
