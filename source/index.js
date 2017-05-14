@@ -11,7 +11,8 @@ console.log(`${colourTitle("Buttercup")} v${version}`);
 
 const filePath = argv._[0];
 if (!filePath) {
-    throw new Error("Expected archive filename");
+    console.error("Failed opening archive: Expected archive filename");
+    process.exit(2);
 }
 
 getAppContext().archiveName = path.basename(filePath);
@@ -23,6 +24,10 @@ function prompt() {
 }
 
 loadArchiveFromFile(filePath)
+    .catch(function(err) {
+        console.error(`Failed opening archive: ${err.message}`);
+        process.exit(1);
+    })
     .then(prompt)
     .catch(function(err) {
         const pe = new PrettyError();
