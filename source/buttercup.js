@@ -25,6 +25,29 @@ function getSharedWorkspace() {
     return __workspace;
 }
 
+function listEntries() {
+    const context = getAppContext();
+    if (context.currentGroupID && context.section === "group") {
+        const workspace = getSharedWorkspace();
+        const archive = workspace.primary.archive;
+        const group = archive.findGroupByID(context.currentGroupID);
+        const entries = group.getEntries();
+        if (entries.length > 0) {
+            entries.forEach(function(entry, index) {
+                const entryID = dimColour(`(${entry.getID()})`);
+                const indexTxt = `${index + 1}.`;
+                console.log(` ${indexTxt} ${colourItemTitle(entry.getProperty("title"))} ${entryID}`);
+            });
+        } else {
+            console.log("No entries available: Empty group");
+        }
+    } else if (context.section === "archive") {
+        console.log("At archive level: no entries available");
+    } else {
+        throw new Error(`Failed listing entries: Unknown context: ${context.section}`);
+    }
+}
+
 function listGroups() {
     const groups = getCurrentGroupsArray();
     groups.forEach(function(group, index) {
@@ -103,6 +126,7 @@ function setSharedWorkspace(ws) {
 
 module.exports = {
     getSharedWorkspace,
+    listEntries,
     listGroups,
     loadArchiveFromFile,
     selectGroupByIndex,

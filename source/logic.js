@@ -1,4 +1,4 @@
-const { listGroups, selectGroupByIndex, selectPreviousGroup } = require("./buttercup.js");
+const { listEntries, listGroups, selectGroupByIndex, selectPreviousGroup } = require("./buttercup.js");
 const { getSharedWorkspace } = require("./buttercup.js");
 const { colourTitle, colourItemTitle, dimColour } = require("./terminal.js");
 
@@ -31,6 +31,22 @@ function displayTree() {
     renderTreeNode(archive);
 }
 
+function handleEntriesCommand(commandParts) {
+    const primary = commandParts.shift();
+    switch (primary) {
+        case "list":
+            listEntries();
+            break;
+        // case "select": {
+        //     const index = commandParts.shift();
+        //     selectGroupByIndex(index);
+        //     break;
+        // }
+        default:
+            console.error(`Unrecognised entries command: ${primary}`);
+    }
+}
+
 function handleGroupsCommand(commandParts) {
     const primary = commandParts.shift();
     switch (primary) {
@@ -55,6 +71,8 @@ function handleGroupsCommand(commandParts) {
 function processCommand(commandParts) {
     const primary = commandParts.shift();
     switch (primary) {
+        case "entries":
+            return handleEntriesCommand(commandParts);
         case "groups":
             return handleGroupsCommand(commandParts);
         case "tree":
