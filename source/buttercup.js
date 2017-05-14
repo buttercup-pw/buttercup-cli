@@ -69,6 +69,7 @@ function selectGroupByIndex(index) {
     context.section = "group";
     context.currentGroupID = group.getID();
     context.currentEntryID = null;
+    context.currentTitle = group.getTitle();
     logCurrentGroup();
 }
 
@@ -85,11 +86,13 @@ function selectPreviousGroup() {
     if (parent) {
         context.currentGroupID = parent.getID();
         context.section = "group";
+        context.currentTitle = parent.getTitle();
         logCurrentGroup();
     } else {
         // no parent, use archive
         context.currentGroupID = null;
         context.section = "archive";
+        context.currentTitle = "";
         console.log("At archive level");
     }
 }

@@ -1,6 +1,8 @@
 const read = require("read");
 const pify = require("pify");
 const { parseCommandString } = require("./parsing.js");
+const { getAppContext } = require("./app.js");
+const { colourPath, colourSeparator, getSeparator } = require("./terminal.js");
 
 const readPrompt = pify(read);
 
@@ -12,6 +14,20 @@ function getLoginPassword() {
     });
 }
 
+function getPrompt() {
+    const context = getAppContext();
+    switch (context.section) {
+        case "archive":
+            return colourPath(context.archiveName) + colourSeparator(getSeparator());
+        case "entry":
+            /* falls-through */
+        case "group":
+            return colourPath(context.currentTitle) + colourSeparator(getSeparator());
+        default:
+            throw new Error(`Unable to create prompt: Invalid section: ${context.section}`);
+    }
+}
+
 function getUserCommand() {
     return getUserInput()
         .then(function(inputText) {
@@ -21,7 +37,7 @@ function getUserCommand() {
 
 function getUserInput() {
     return readPrompt({
-        prompt: "Prompt> ", // todo
+        prompt: getPrompt(),
         terminal: true
     });
 }

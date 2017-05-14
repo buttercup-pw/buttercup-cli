@@ -1,4 +1,5 @@
 const chalk = require("chalk");
+const hasUnicode = require("has-unicode");
 
 function colourCommand(text) {
     return text;
@@ -24,11 +25,18 @@ function dimColour(text) {
     return chalk.dim(text);
 }
 
+function getSeparator() {
+    return hasUnicode() ?
+        " 🔓 " :
+        "» ";
+}
+
 module.exports = {
     colourCommand,
     colourItemTitle,
     colourPath,
     colourSeparator,
     colourTitle,
-    dimColour
+    dimColour,
+    getSeparator
 };

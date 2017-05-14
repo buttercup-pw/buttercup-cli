@@ -9,9 +9,11 @@ function getAppContext() {
 
 function getNewContext() {
     return {
+        archiveName: null,
         section: "archive",
         currentGroupID: null,
-        currentEntryID: null
+        currentEntryID: null,
+        currentTitle: ""
     };
 }
 
